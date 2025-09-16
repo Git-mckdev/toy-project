@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.overflow.toy_project.mapper.MemberMapper">
+    <select id="selectByEmail" resultType="com.overflow.toy_project.model.Member">
+        SELECT * FROM member WHERE email = #{email}
+    </select>
+
+    <insert id="insertMember" parameterType="com.overflow.toy_project.model.Member">
+        INSERT INTO member(email, password, username) VALUES (#{email}, #{password}, #{username})
+    </insert>
+
+    <select id="selectByEmailAndPassword" parameterType="com.overflow.toy_project.model.Member" resultType="com.overflow.toy_project.model.Member">
+        SELECT * FROM member WHERE email = #{email} AND password = #{password}
+    </select>
+</mapper>
