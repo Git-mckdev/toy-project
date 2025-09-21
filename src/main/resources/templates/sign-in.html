@@ -13,6 +13,7 @@
 <body class="bg-light">
     <div class="d-flex justify-content-center align-items-center vh-100">
         <div class="card p-4 shadow-sm" style="width: 350px;">
+            <div th:if="${successMsg}" class="alert alert-primary mt-3" th:text="${successMsg}"></div>
             <div th:if="${errorMsg}" class="alert alert-danger mt-3" th:text="${errorMsg}"></div>
 
             <h3 class="text-center mb-4">로그인</h3>

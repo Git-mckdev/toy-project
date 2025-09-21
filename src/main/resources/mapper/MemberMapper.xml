@@ -7,7 +7,7 @@
         SELECT * FROM member WHERE email = #{email}
     </select>
 
-    <insert id="insertMember" parameterType="com.overflow.toy_project.model.Member">
+    <insert id="insertMember" parameterType="com.overflow.toy_project.model.Member" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO member(email, password, username) VALUES (#{email}, #{password}, #{username})
     </insert>
 
