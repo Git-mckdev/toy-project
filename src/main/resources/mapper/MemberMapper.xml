@@ -7,11 +7,15 @@
         SELECT * FROM member WHERE email = #{email}
     </select>
 
-    <insert id="insertMember" parameterType="com.overflow.toy_project.model.Member" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO member(email, password, username) VALUES (#{email}, #{password}, #{username})
-    </insert>
-
     <select id="selectByEmailAndPassword" parameterType="com.overflow.toy_project.model.Member" resultType="com.overflow.toy_project.model.Member">
         SELECT * FROM member WHERE email = #{email} AND password = #{password}
     </select>
+
+    <insert id="insertMember" parameterType="com.overflow.toy_project.model.Member" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO member(email, password, username, portfolio, gitHub) VALUES (#{email}, #{password}, #{username}, #{portfolio}, #{gitHub})
+    </insert>
+
+    <update id="updateMember" parameterType="com.overflow.toy_project.model.Member">
+        UPDATE member SET email = #{email}, password = #{password}, username = #{username}, portfolio = #{portfolio}, gitHub = #{gitHub} WHERE id = #{id}
+    </update>
 </mapper>

@@ -21,13 +21,14 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+    // 회원가입, 로그인 기능
     @GetMapping("/")
-    public String pageIndex() {
+    public String viewSignIn() {
         return "sign-in";
     }
 
     @GetMapping("/sign-up")
-    public String pageSignUp() {
+    public String viewSignUp() {
         return "sign-up";
     }
 
@@ -63,6 +64,57 @@ public class MemberController {
 
         session.setAttribute("loginMember", loginMember);
 
-        return "redirect:/posts";
+        return "main";
+    }
+
+    @GetMapping("/update")
+    public String viewMemberUpdate(Model model, HttpSession session) {
+        Member member = (Member) session.getAttribute("loginMember");
+
+        model.addAttribute("id", member.getId());
+        model.addAttribute("username", member.getUsername());
+        model.addAttribute("email", member.getEmail());
+        model.addAttribute("portfolio", member.getPortfolio());
+        model.addAttribute("gitHub", member.getGitHub());
+
+        return "member-update";
+    }
+
+    @PostMapping("/update")
+    public String updateMember(Member member, HttpSession session) {
+        memberService.updateMember(member);
+
+        session.setAttribute("loginMember", member);
+
+        return "main";
+    }
+
+    @PostMapping("/logout")
+    public String logoutMember(Model model, HttpSession session) {
+        model.addAttribute("errorMsg", "로그아웃 되었습니다. 다시 로그인 정보를 입력해 주세요.");
+
+        session.removeAttribute("loginMember");
+
+        return "sign-in";
+    }
+
+    // 메인 화면 기능
+    @GetMapping("/main")
+    public String viewMain() {
+        return "main";
+    }
+
+    @GetMapping("/portfolio")
+    public String redirectPortfolio(HttpSession session) {
+        Member member = (Member) session.getAttribute("loginMember");
+
+        return "redirect:" + member.getPortfolio();
+    }
+
+    @GetMapping("/gitHub")
+    public String redirectGitHub(HttpSession session) {
+        Member member = (Member) session.getAttribute("loginMember");
+
+        return "redirect:https://github.com/" + member.getGitHub();
     }
 }

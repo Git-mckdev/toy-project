@@ -20,11 +20,15 @@ public class MemberService {
         return memberMapper.selectByEmail(member.getEmail());
     }
 
+    public Member loginMember(Member member) {
+        return memberMapper.selectByEmailAndPassword(member);
+    }
+
     public void saveMember(Member member) {
         memberMapper.insertMember(member);
     }
 
-    public Member loginMember(Member member) {
-        return memberMapper.selectByEmailAndPassword(member);
+    public void updateMember(Member member) {
+        memberMapper.updateMember(member);
     }
 }

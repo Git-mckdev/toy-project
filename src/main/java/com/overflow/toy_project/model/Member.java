@@ -6,6 +6,8 @@ public class Member {
     private String email;
     private String username;
     private String password;
+    private String portfolio;
+    private String gitHub;
 
     public long getId() {
         return id;
@@ -37,5 +39,21 @@ public class Member {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(String portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public String getGitHub() {
+        return gitHub;
+    }
+
+    public void setGitHub(String gitHub) {
+        this.gitHub = gitHub;
     }
 }

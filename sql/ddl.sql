@@ -6,7 +6,9 @@ CREATE TABLE `member` (
     `id` BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary Key',
     `email` VARCHAR(255) NOT NULL COMMENT '회원 이메일',
     `password` VARCHAR(255) NOT NULL COMMENT '회원 비밀번호',
-    `username` VARCHAR(255) NOT NULL COMMENT '회원 이름'
+    `username` VARCHAR(255) NOT NULL COMMENT '회원 이름',
+    `portfolio` VARCHAR(255) NOT NULL COMMENT '포트폴리오 링크',
+    `gitHub` VARCHAR(255) NOT NULL COMMENT '깃허브 아이디'
 ) COMMENT '회원 테이블';
 
 CREATE TABLE post (
