@@ -20,9 +20,9 @@
             <hr>
             <p class="card-text" th:text="${post.content}">내용</p>
             <div th:if="${session.loginMember != null and session.loginMember.id == post.member.id}" class="mt-2">
-                <a th:href="@{'/posts/' + ${post.id} + '/update'}" class="btn btn-warning me-2">수정</a>
+                <a th:href="@{'/main/post/' + ${post.id} + '/update'}" class="btn btn-warning me-2">수정</a>
 
-                <form th:action="@{'/posts/' + ${post.id} + '/delete'}" method="post" style="display:inline;">
+                <form th:action="@{'/main/post/' + ${post.id} + '/delete'}" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제 하시겠습니까 ?');">삭제</button>
                 </form>
             </div>
@@ -40,7 +40,7 @@
                     <p class="mb-0" th:text="${#strings.concat('[', comment.member.username, '] ', comment.content)}"></p>
 
                     <div th:if="${session.loginMember != null and session.loginMember.id == comment.member.id}" class="mt-2">
-                        <form th:action="@{'/posts/' + ${comment.post.id} + '/' + ${comment.id} + '/delete'}" method="post" style="display:inline;">
+                        <form th:action="@{'/main/post/' + ${comment.post.id} + '/' + ${comment.id} + '/delete'}" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('정말 삭제 하시겠습니까 ?');">삭제</button>
                         </form>
                     </div>
@@ -48,7 +48,7 @@
             </div>
 
             <!-- 댓글 작성 폼 -->
-            <form id="commentForm" th:action="@{'/posts/' + ${post.id} + '/add'}" method="post" class="mt-3">
+            <form id="commentForm" th:action="@{'/main/post/' + ${post.id} + '/add'}" method="post" class="mt-3">
                 <textarea name="content" class="form-control mb-2" placeholder="댓글 작성"></textarea>
                 <button type="submit" class="btn btn-primary">등록</button>
             </form>
@@ -57,7 +57,7 @@
 
     <!-- 목록 버튼 -->
     <div class="text-end">
-        <a href="/posts" class="btn btn-secondary">목록</a>
+        <a href="/main/post" class="btn btn-secondary">목록</a>
     </div>
 </body>
 

@@ -10,7 +10,7 @@
 
 <body class="container mt-4">
     <h1>게시글 수정</h1>
-    <form th:action="@{/posts/update}" method="post">
+    <form th:action="@{/main/post/update}" method="post">
         <input type="hidden" name="id" th:value="${post.id}" />
         
         <div class="mb-3">
@@ -22,7 +22,7 @@
             <textarea name="content" class="form-control" rows="5" th:text="${post.content}"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">수정</button>
-        <a href="/posts" class="btn btn-secondary">취소</a>
+        <a href="/main/post" class="btn btn-secondary">취소</a>
     </form>
 </body>
 

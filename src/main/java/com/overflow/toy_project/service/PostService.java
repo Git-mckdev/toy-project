@@ -19,7 +19,6 @@ public class PostService {
         this.postMapper = postMapper;
     }
 
-    // 게시글 기능
     public List<Post> getAllPosts() {
         return postMapper.selectAllPosts();
     }

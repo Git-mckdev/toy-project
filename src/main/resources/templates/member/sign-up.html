@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내 정보 수정</title>
+    <title>회원가입</title>
     <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
@@ -13,10 +13,10 @@
 <body class="bg-light">
     <div class="d-flex justify-content-center align-items-center vh-100">
         <div class="card p-4 shadow-sm" style="width: 400px;">
-            <h3 class="text-center mb-4">내 정보</h3>
-            <form action="/update" method="post">
-                <input type="hidden" name="id" th:value="${id}" />
+            <div th:if="${errorMsg}" class="alert alert-danger mt-3" th:text="${errorMsg}"></div>
 
+            <h3 class="text-center mb-4">회원가입</h3>
+            <form action="/member/sign-up" method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">이름 (2-6 글자)</label>
                     <input type="text" class="form-control" id="username" name="username" th:value="${username}" pattern=".{2,6}" required>
@@ -41,8 +41,12 @@
                     <label for="gitHub" class="form-label">깃허브 아이디</label>
                     <input type="text" class="form-control" id="gitHub" name="gitHub" th:value="${gitHub}" pattern="\S+" required>
                 </div>
-                <button type="submit" class="btn btn-success w-100">수정</button>
+                <button type="submit" class="btn btn-success w-100">회원가입</button>
             </form>
+
+            <div class="mt-3 text-center">
+                <a href="/">로그인으로 돌아가기</a>
+            </div>
         </div>
     </div>
 </body>

@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.overflow.toy_project.mapper.MemberMapper">
+    <!-- 회원 기능 -->
     <select id="selectByEmail" resultType="com.overflow.toy_project.model.Member">
         SELECT * FROM member WHERE email = #{email}
     </select>

@@ -1,8 +1,6 @@
-package com.overflow.toy_project.controller;
+package com.overflow.toy_project.controller.main.post;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +18,7 @@ import com.overflow.toy_project.service.PostService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/posts")
+@RequestMapping("/main/post")
 public class PostController {
     
     private final PostService postService;
@@ -37,7 +35,7 @@ public class PostController {
 
         model.addAttribute("posts", posts);
 
-        return "post-list";
+        return "main/post/list";
     }
 
     @GetMapping("/{id}")
@@ -45,14 +43,14 @@ public class PostController {
         model.addAttribute("post", postService.getPost(id));
         model.addAttribute("newComment", new Comment());
 
-        return "post-detail";
+        return "main/post/detail";
     }
 
     @GetMapping("/create")
     public String createForm(Model model) {
         model.addAttribute("post", new Post());
 
-        return "post-form-write";
+        return "main/post/write";
     }
 
     @PostMapping("/create")
@@ -63,29 +61,29 @@ public class PostController {
 
         postService.createPost(post);
 
-        return "redirect:/posts/" + post.getId();
+        return "redirect:/main/post/" + post.getId();
     }
 
     @GetMapping("/{id}/update")
     public String updateForm(@PathVariable long id, Model model) {
         model.addAttribute("post", postService.getPost(id));
 
-        return "post-form-update";
+        return "main/post/update";
     }
 
     @PostMapping("/update")
     public String updatePost(Post post) {
         postService.updatePost(post);
 
-        return "redirect:/posts";
+        return "redirect:/main/post/" + post.getId();
     }
 
     @PostMapping("/{id}/delete")
-    public String updatePost(@PathVariable long id) {
+    public String deletePost(@PathVariable long id) {
         postService.deleteCommentAllByPostId(id);
         postService.deletePost(id);
 
-        return "redirect:/posts";
+        return "redirect:/main/post";
     }
 
     // 댓글 기능
@@ -99,13 +97,13 @@ public class PostController {
         
         postService.addComment(comment);
 
-        return "redirect:/posts/" + postId;
+        return "redirect:/main/post/" + postId;
     }
 
     @PostMapping("/{postId}/{commentId}/delete")
     public String deleteComment(@PathVariable long postId, @PathVariable long commentId) {
         postService.deleteComment(commentId);
 
-        return "redirect:/posts/" + postId;
+        return "redirect:/main/post/" + postId;
     }
 }

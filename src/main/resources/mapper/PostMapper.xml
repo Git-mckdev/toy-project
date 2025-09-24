@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.overflow.toy_project.mapper.PostMapper">
-    <!-- 게시글 -->
+    <!-- 게시글 기능 -->
     <resultMap id="PostResultMap" type="com.overflow.toy_project.model.Post">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
@@ -50,7 +50,7 @@
         DELETE FROM post WHERE id = #{id}
     </delete>
 
-    <!-- 댓글 -->
+    <!-- 댓글 기능 -->
     <resultMap id="CommentResultMap" type="com.overflow.toy_project.model.Comment">
         <id property="id" column="id"/>
         <result property="content" column="content"/>

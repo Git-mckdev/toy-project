@@ -17,7 +17,7 @@
             <div th:if="${errorMsg}" class="alert alert-danger mt-3" th:text="${errorMsg}"></div>
 
             <h3 class="text-center mb-4">로그인</h3>
-            <form action="/login" method="post">
+            <form action="/member/sign-in" method="post">
                 <div class="mb-3">
                     <label for="email" class="form-label">이메일</label>
                     <input type="email" class="form-control" id="email" name="email" th:value="${email}" required>
@@ -29,7 +29,7 @@
                 <button type="submit" class="btn btn-primary w-100">로그인</button>
             </form>
             <div class="mt-3 text-center">
-                <a href="/sign-up">회원가입</a>
+                <a href="/member/sign-up">회원가입</a>
             </div>
         </div>
     </div>

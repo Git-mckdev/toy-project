@@ -7,6 +7,7 @@ import com.overflow.toy_project.model.Member;
 
 @Mapper
 public interface MemberMapper {
+    // 회원 기능
     Member selectByEmail(@Param("email") String email);
     Member selectByEmailAndPassword(Member member);
     void insertMember(Member member);
