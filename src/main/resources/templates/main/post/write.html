@@ -11,6 +11,8 @@
 <body class="container mt-4">
     <h1>게시글 작성</h1>
     <form th:action="@{/main/post/create}" method="post">
+        <input type="hidden" name="formToken" th:value="${formToken}" />
+
         <div class="mb-3">
             <label>제목</label>
             <input type="text" name="title" class="form-control" />
@@ -20,7 +22,7 @@
             <textarea name="content" class="form-control" rows="5"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">등록</button>
-        <a href="/main/post" class="btn btn-secondary">취소</a>
+        <a href="/main/post/list" class="btn btn-secondary">취소</a>
     </form>
 </body>
 

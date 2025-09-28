@@ -19,7 +19,7 @@
             <p class="card-title mb-3" th:text="${#strings.concat('[작성자] ', post.member.username, '(', post.member.email, ')')}">작성자</p>
             <hr>
             <p class="card-text" th:text="${post.content}">내용</p>
-            <div th:if="${session.loginMember != null and session.loginMember.id == post.member.id}" class="mt-2">
+            <div th:if="${member != null and member.id == post.member.id}" class="mt-2">
                 <a th:href="@{'/main/post/' + ${post.id} + '/update'}" class="btn btn-warning me-2">수정</a>
 
                 <form th:action="@{'/main/post/' + ${post.id} + '/delete'}" method="post" style="display:inline;">
@@ -39,7 +39,7 @@
                 <div th:each="comment : ${post.comments}" class="border rounded p-2 mb-2 bg-light">
                     <p class="mb-0" th:text="${#strings.concat('[', comment.member.username, '] ', comment.content)}"></p>
 
-                    <div th:if="${session.loginMember != null and session.loginMember.id == comment.member.id}" class="mt-2">
+                    <div th:if="${member != null and member.id == comment.member.id}" class="mt-2">
                         <form th:action="@{'/main/post/' + ${comment.post.id} + '/' + ${comment.id} + '/delete'}" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('정말 삭제 하시겠습니까 ?');">삭제</button>
                         </form>
@@ -57,7 +57,7 @@
 
     <!-- 목록 버튼 -->
     <div class="text-end">
-        <a href="/main/post" class="btn btn-secondary">목록</a>
+        <a href="/main/post/list" class="btn btn-secondary">목록</a>
     </div>
 </body>
 

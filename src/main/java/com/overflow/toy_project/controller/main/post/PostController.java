@@ -3,6 +3,7 @@ package com.overflow.toy_project.controller.main.post;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.overflow.toy_project.model.Comment;
 import com.overflow.toy_project.model.Member;
 import com.overflow.toy_project.model.Post;
+import com.overflow.toy_project.security.CustomUserDetails;
 import com.overflow.toy_project.service.PostService;
-
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/main/post")
@@ -29,7 +29,7 @@ public class PostController {
     }
 
     // 게시글 기능
-    @GetMapping
+    @GetMapping("/list")
     public String listPosts(Model model) {
         List<Post> posts = postService.getAllPosts();
 
@@ -39,7 +39,10 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public String viewPost(@PathVariable long id, Model model) {
+    public String viewPost(@PathVariable long id, Model model, Authentication authentication) {
+        Member member = ((CustomUserDetails) authentication.getPrincipal()).getMember();
+
+        model.addAttribute("member", member);
         model.addAttribute("post", postService.getPost(id));
         model.addAttribute("newComment", new Comment());
 
@@ -54,10 +57,10 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public String createPost(Post post, HttpSession session) {
-        Member loginMember = (Member) session.getAttribute("loginMember");
+    public String createPost(Post post, Authentication authentication) {
+        Member member = ((CustomUserDetails) authentication.getPrincipal()).getMember();
 
-        post.setMember(loginMember);
+        post.setMember(member);
 
         postService.createPost(post);
 
@@ -83,16 +86,16 @@ public class PostController {
         postService.deleteCommentAllByPostId(id);
         postService.deletePost(id);
 
-        return "redirect:/main/post";
+        return "redirect:/main/post/list";
     }
 
     // 댓글 기능
     @PostMapping("/{postId}/add")
-    public String addComment(@PathVariable long postId, Comment comment, HttpSession session) {
-        Member loginMember = (Member) session.getAttribute("loginMember");
+    public String addComment(@PathVariable long postId, Comment comment, Authentication authentication) {
+        Member member = ((CustomUserDetails) authentication.getPrincipal()).getMember();
         Post post = postService.getPost(postId);
 
-        comment.setMember(loginMember);
+        comment.setMember(member);
         comment.setPost(post);
         
         postService.addComment(comment);

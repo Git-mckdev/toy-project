@@ -22,7 +22,7 @@
             <textarea name="content" class="form-control" rows="5" th:text="${post.content}"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">수정</button>
-        <a href="/main/post" class="btn btn-secondary">취소</a>
+        <a href="/main/post/${post.id}" class="btn btn-secondary">취소</a>
     </form>
 </body>
 

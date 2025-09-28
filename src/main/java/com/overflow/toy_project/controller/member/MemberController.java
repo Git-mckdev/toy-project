@@ -1,6 +1,8 @@
 package com.overflow.toy_project.controller.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.overflow.toy_project.model.Member;
+import com.overflow.toy_project.security.CustomUserDetails;
 import com.overflow.toy_project.service.MemberService;
 
 import jakarta.servlet.http.HttpSession;
@@ -18,32 +21,28 @@ import jakarta.servlet.http.HttpSession;
 public class MemberController {
 
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, PasswordEncoder passwordEncoder) {
         this.memberService = memberService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // 회원 기능
     @GetMapping("/sign-in")
-    public String viewSignIn() {
-        return "member/sign-in";
-    }
+    public String viewSignIn(Model model, HttpSession session) {
+        String key = "errorMsg";
 
-    @PostMapping("/sign-in")
-    public String loginMember(Member member, Model model, HttpSession session) {
-        Member loginMember = memberService.loginMember(member);
+        Object errorMsg = session.getAttribute(key);
 
-        if (loginMember == null) {
-            model.addAttribute("email", member.getEmail());
-            model.addAttribute("errorMsg", "이메일 혹은 비밀번호가 일치하지 않습니다.");
+        if (errorMsg != null) {
+            model.addAttribute(key, errorMsg);
 
-            return "member/sign-in";
+            session.removeAttribute(key);
         }
 
-        session.setAttribute("loginMember", loginMember);
-
-        return "redirect:/main/index";
+        return "member/sign-in";
     }
 
     @GetMapping("/sign-up")
@@ -52,7 +51,9 @@ public class MemberController {
     }
 
     @PostMapping("/sign-up")
-    public String registerMember(Member member, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String registerMember(Member member, Model model, RedirectAttributes redirectAttributes) {
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        
         if (memberService.validateDuplicateMember(member) != null) {
             model.addAttribute("username", member.getUsername());
             model.addAttribute("email", member.getEmail());
@@ -69,8 +70,8 @@ public class MemberController {
     }
 
     @GetMapping("/update")
-    public String viewMemberUpdate(Model model, HttpSession session) {
-        Member member = (Member) session.getAttribute("loginMember");
+    public String viewMemberUpdate(Model model, Authentication authentication) {
+        Member member = ((CustomUserDetails) authentication.getPrincipal()).getMember();
 
         model.addAttribute("id", member.getId());
         model.addAttribute("username", member.getUsername());
@@ -82,20 +83,9 @@ public class MemberController {
     }
 
     @PostMapping("/update")
-    public String updateMember(Member member, HttpSession session) {
+    public String updateMember(Member member) {
         memberService.updateMember(member);
 
-        session.setAttribute("loginMember", member);
-
         return "redirect:/main/index";
-    }
-
-    @PostMapping("/logout")
-    public String logoutMember(HttpSession session, RedirectAttributes redirectAttributes) {
-        session.removeAttribute("loginMember");
-
-        redirectAttributes.addFlashAttribute("errorMsg", "로그아웃 되었습니다. 다시 로그인 정보를 입력해 주세요.");
-
-        return "redirect:/member/sign-in";
     }
 }
