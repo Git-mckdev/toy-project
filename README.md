@@ -9,3 +9,4 @@
 8. RedirectAttributes 클래스를 사용한 1회성 데이터 전송 환경 구성 (View 전환 시 URL이 변경되는 것을 방지)
 9. Spring Security를 사용해 로그인 시스템 강화 및 비인증 사용자 페이지 접근 권한 관리
 10. InvalidSessionStrategy를 사용해 세션 만료 대응 기능 구현
+11. Monaco Editor(FE)와 ProcessBuilder(BE)를 사용해 Java, Python 코드 실행기 페이지 구현 (해당 코드가 서버 컴퓨터에서 직접 실행되므로 보안 위험에 따라 추후 실사용 시 외부 API 사용 방식으로 변경 권장)

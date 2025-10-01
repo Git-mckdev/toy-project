@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>코드 실행기</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.38.0/min/vs/loader.min.js"></script>
+    <style>
+        /* vscode dark theme 배경 + 폰트 */
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #1e1e1e;
+            color: #cccccc;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 상단 툴바 */
+        header {
+            display: flex;
+            align-items: center;
+            background-color: #252526;
+            padding: 0 16px;
+            height: 40px;
+            gap: 12px;
+            border-bottom: 1px solid #333;
+            color: #cccccc;
+        }
+
+        header label {
+            font-weight: 600;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        select {
+            background-color: #3c3c3c;
+            border: none;
+            color: #cccccc;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        select:focus {
+            outline: 1px solid #007acc;
+        }
+
+        button {
+            background-color: #0e639c;
+            border: none;
+            color: white;
+            padding: 6px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #1177d1;
+        }
+
+        /* 에디터 + 결과 영역 flex */
+        main {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            height: calc(100% - 40px);
+            /* header 높이 제외 */
+        }
+
+        /* 편집기 영역 */
+        #editor {
+            flex-grow: 1;
+            border-bottom: 1px solid #333;
+        }
+
+        /* 출력 영역 */
+        #output {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: Consolas, "Courier New", monospace;
+            padding: 12px 16px;
+            height: 150px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            border-top: 1px solid #333;
+            user-select: text;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <label for="language">언어 선택:</label>
+        <select id="language">
+            <option value="java" selected>Java</option>
+            <option value="python">Python</option>
+        </select>
+        <button id="runBtn">실행</button>
+    </header>
+
+    <main>
+        <div id="editor"></div>
+        <div id="output" readonly></div>
+    </main>
+
+    <script>
+        let editor;
+
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.38.0/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            const defaultCodes = {
+                java: [
+                    "public class Main {",
+                    "    public static void main(String[] args) {",
+                    "        System.out.println(\"Hello, World!\");",
+                    "    }",
+                    "}"
+                ].join("\n"),
+                python: [
+                    "def main():",
+                    "    print(\"Hello, World!\")",
+                    "",
+                    "if __name__ == \"__main__\":",
+                    "    main()"
+                ].join("\n")
+            };
+
+            editor = monaco.editor.create(document.getElementById('editor'), {
+                value: defaultCodes.java,
+                language: 'java',
+                theme: 'vs-dark',
+                automaticLayout: true
+            });
+
+            document.getElementById('language').addEventListener('change', function () {
+                const lang = this.value;
+                monaco.editor.setModelLanguage(editor.getModel(), lang);
+                editor.setValue(defaultCodes[lang] || "");
+            });
+
+            document.getElementById('runBtn').addEventListener('click', async function () {
+                const language = document.getElementById('language').value;
+                const codeContent = editor.getValue();
+
+                document.getElementById('output').textContent = '실행 중... 잠시만 기다려주세요.';
+
+                try {
+                    const res = await fetch('/main/code/execute', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ language, codeContent })
+                    });
+
+                    if (!res.ok) throw new Error('서버 응답 오류');
+
+                    const result = await res.text();
+                    document.getElementById('output').textContent = result;
+                } catch (error) {
+                    document.getElementById('output').textContent = '❌ 오류 발생: ' + error.message;
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

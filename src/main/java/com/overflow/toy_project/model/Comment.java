@@ -1,6 +1,7 @@
 package com.overflow.toy_project.model;
 
 public class Comment {
+    
     private long id;
     private String content;
     private String createAt;

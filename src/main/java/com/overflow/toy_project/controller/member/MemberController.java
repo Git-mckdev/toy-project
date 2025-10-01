@@ -89,8 +89,17 @@ public class MemberController {
     }
 
     @PostMapping("/update")
-    public String updateMember(Member member) {
-        memberService.updateMember(member);
+    public String updateMember(Member member, Authentication authentication) {
+        Member originMember = ((CustomUserDetails) authentication.getPrincipal()).getMember();
+
+        originMember.setEmail(member.getEmail());
+        originMember.setUsername(member.getUsername());
+        System.out.println("<" + member.getPassword() + ">");
+        originMember.setPassword(passwordEncoder.encode(member.getPassword()));
+        originMember.setPortfolio(member.getPortfolio());
+        originMember.setGitHub(member.getGitHub());
+
+        memberService.updateMember(originMember);
 
         return "redirect:/main/index";
     }
