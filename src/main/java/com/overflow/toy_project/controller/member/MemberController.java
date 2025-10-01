@@ -1,6 +1,7 @@
 package com.overflow.toy_project.controller.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,9 +32,14 @@ public class MemberController {
 
     // 회원 기능
     @GetMapping("/sign-in")
-    public String viewSignIn(Model model, HttpSession session) {
+    public String viewSignIn(Model model, HttpSession session, Authentication authentication) {
+        if (authentication != null
+            && authentication.isAuthenticated()
+            && !(authentication instanceof AnonymousAuthenticationToken)) {
+            return "redirect:/main/index";
+        }
+        
         String key = "errorMsg";
-
         Object errorMsg = session.getAttribute(key);
 
         if (errorMsg != null) {

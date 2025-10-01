@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.overflow.toy_project.security.CustomAuthFailureHandler;
+import com.overflow.toy_project.security.CustomInvalidSessionStrategy;
 import com.overflow.toy_project.security.CustomLogoutSuccessHandler;
 import com.overflow.toy_project.security.CustomUserDetailsService;
 
@@ -56,6 +57,9 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/main/index", true)
                 .failureHandler(new CustomAuthFailureHandler("/member/sign-in"))
                 .permitAll()
+            )
+            .sessionManagement(session -> session
+                .invalidSessionStrategy(new CustomInvalidSessionStrategy("/member/sign-in"))
             )
             .logout(logout -> logout
                 .logoutUrl("/member/logout")

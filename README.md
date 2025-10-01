@@ -8,3 +8,4 @@
 7. Controller, View 세분화
 8. RedirectAttributes 클래스를 사용한 1회성 데이터 전송 환경 구성 (View 전환 시 URL이 변경되는 것을 방지)
 9. Spring Security를 사용해 로그인 시스템 강화 및 비인증 사용자 페이지 접근 권한 관리
+10. InvalidSessionStrategy를 사용해 세션 만료 대응 기능 구현
